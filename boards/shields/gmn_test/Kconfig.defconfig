@@ -1,0 +1,6 @@
+if SHIELD_GMN_TEST
+
+config ZMK_KEYBOARD_NAME
+    default "gmn_test"
+
+endif # SHIELD_GMN_TEST
