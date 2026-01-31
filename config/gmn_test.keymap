@@ -23,12 +23,5 @@
         };
     };
 
-    conditional_layers {
-        compatible = "zmk,conditional-layers";
-
-        START {
-            if-layers = <0>;
-            then-layer = <0>;
-        };
-    };
+    conditional_layers { compatible = "zmk,conditional-layers"; };
 };
