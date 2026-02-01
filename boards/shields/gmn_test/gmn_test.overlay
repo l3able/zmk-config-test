@@ -1,6 +1,48 @@
+#include <zephyr/dt-bindings/input/input.h>
+
+/* ADC for analog stick (Stick X/Y). On nRF52840 standard ADC: AIN2=P0.04, AIN3=P0.05.
+ * If your stick is wired to P0.09/P0.10, verify ADC channel mapping on your board. */
+&adc {
+  status = "okay";
+};
+
 / {
   chosen {
     zmk,kscan = &kscan0;
+  };
+
+  /* Analog stick XY → mouse movement */
+  stick: analog_input_stick {
+    compatible = "zmk,analog-input";
+    sampling-hz = <100>;
+
+    x-ch {
+      io-channels = <&adc 2>;
+      mv-mid = <1630>;
+      mv-min-max = <1600>;
+      mv-deadzone = <10>;
+      scale-multiplier = <1>;
+      scale-divisor = <70>;
+      evt-type = <INPUT_EV_REL>;
+      input-code = <INPUT_REL_X>;
+    };
+
+    y-ch {
+      io-channels = <&adc 3>;
+      mv-mid = <1630>;
+      mv-min-max = <1600>;
+      mv-deadzone = <10>;
+      scale-multiplier = <1>;
+      scale-divisor = <70>;
+      invert;
+      evt-type = <INPUT_EV_REL>;
+      input-code = <INPUT_REL_Y>;
+    };
+  };
+
+  stick_listener: stick_listener {
+    compatible = "zmk,input-listener";
+    device = <&stick>;
   };
 
   kscan0: kscan {
