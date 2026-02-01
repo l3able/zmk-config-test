@@ -1,46 +1,6 @@
-/* ADC for analog stick (Stick X/Y). On nRF52840 standard ADC: AIN2=P0.04, AIN3=P0.05.
- * If your stick is wired to P0.09/P0.10, verify ADC channel mapping on your board. */
-&adc {
-  status = "okay";
-};
-
 / {
   chosen {
     zmk,kscan = &kscan0;
-  };
-
-  /* Analog stick XY → mouse movement */
-  stick: analog_input_stick {
-    compatible = "zmk,analog-input";
-    sampling-hz = <100>;
-
-    x-ch {
-      io-channels = <&adc 2>;
-      mv-mid = <250>;
-      mv-min-max = <1600>;
-      mv-deadzone = <80>;
-      scale-multiplier = <1>;
-      scale-divisor = <45>;
-      evt-type = <2>;
-      input-code = <0>;
-    };
-
-    y-ch {
-      io-channels = <&adc 3>;
-      mv-mid = <250>;
-      mv-min-max = <1600>;
-      mv-deadzone = <80>;
-      scale-multiplier = <1>;
-      scale-divisor = <45>;
-      invert;
-      evt-type = <2>;
-      input-code = <1>;
-    };
-  };
-
-  stick_listener: stick_listener {
-    compatible = "zmk,input-listener";
-    device = <&stick>;
   };
 
   kscan0: kscan {

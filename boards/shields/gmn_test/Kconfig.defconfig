@@ -3,18 +3,4 @@ if SHIELD_GMN_TEST
 config ZMK_KEYBOARD_NAME
     default "gmn_test"
 
-# Pointing / mouse (for analog stick)
-config ZMK_POINTING
-    default y
-
-# ADC for analog stick
-config ADC
-    default y
-
-config ANALOG_INPUT
-    default y
-
-config INPUT
-    default y
-
 endif # SHIELD_GMN_TEST
