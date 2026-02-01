@@ -1,5 +1,3 @@
-#include <zephyr/dt-bindings/input/input.h>
-
 /* ADC for analog stick (Stick X/Y). On nRF52840 standard ADC: AIN2=P0.04, AIN3=P0.05.
  * If your stick is wired to P0.09/P0.10, verify ADC channel mapping on your board. */
 &adc {
@@ -23,8 +21,8 @@
       mv-deadzone = <10>;
       scale-multiplier = <1>;
       scale-divisor = <70>;
-      evt-type = <INPUT_EV_REL>;
-      input-code = <INPUT_REL_X>;
+      evt-type = <2>;
+      input-code = <0>;
     };
 
     y-ch {
@@ -35,8 +33,8 @@
       scale-multiplier = <1>;
       scale-divisor = <70>;
       invert;
-      evt-type = <INPUT_EV_REL>;
-      input-code = <INPUT_REL_Y>;
+      evt-type = <2>;
+      input-code = <1>;
     };
   };
 
