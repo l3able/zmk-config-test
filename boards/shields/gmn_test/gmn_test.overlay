@@ -65,10 +65,10 @@
   anin0: analog_input_0 {
     compatible = "zmk,analog-input";
     sampling-hz = <100>;
-    /* X = P0.31 (adc 7), Y = P0.29 (adc 5). mv-mid = центр у спокої (12-bit ≈ 2048); deadzone — проти дрейфу */
+    /* X = P0.31 (adc 7), Y = P0.29 (adc 5). mv-mid = центр у спокої (1900 для PSP-стика); deadzone — проти дрейфу */
     x-ch {
       io-channels = <&adc 7>;
-      mv-mid = <2048>;
+      mv-mid = <1900>;
       mv-min-max = <2000>;
       mv-deadzone = <400>;
       scale-multiplier = <1>;
@@ -78,7 +78,7 @@
     };
     y-ch {
       io-channels = <&adc 5>;
-      mv-mid = <2048>;
+      mv-mid = <1900>;
       mv-min-max = <2000>;
       mv-deadzone = <400>;
       scale-multiplier = <1>;
