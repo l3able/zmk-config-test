@@ -70,9 +70,9 @@
       io-channels = <&adc 5>;
       mv-mid = <1700>;
       mv-min-max = <2000>;
-      mv-deadzone = <400>;
+      mv-deadzone = <250>;
       scale-multiplier = <1>;
-      scale-divisor = <50>;
+      scale-divisor = <80>;
       evt-type = <2>;
       input-code = <1>;
     };
@@ -80,9 +80,9 @@
       io-channels = <&adc 7>;
       mv-mid = <1700>;
       mv-min-max = <2000>;
-      mv-deadzone = <400>;
+      mv-deadzone = <250>;
       scale-multiplier = <1>;
-      scale-divisor = <50>;
+      scale-divisor = <80>;
       evt-type = <2>;
       input-code = <0>;
     };
