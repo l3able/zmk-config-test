@@ -65,19 +65,8 @@
   anin0: analog_input_0 {
     compatible = "zmk,analog-input";
     sampling-hz = <100>;
-    /* X = P0.31 (adc 7), Y = P0.29 (adc 5); invert — стик повернутий, deadzone — проти дрейфу */
+    /* X = P0.29 (adc 5) → REL_X, Y = P0.31 (adc 7) → REL_Y; вгору→вгору, вправо→вправо */
     x-ch {
-      io-channels = <&adc 7>;
-      mv-mid = <2048>;
-      mv-min-max = <2000>;
-      mv-deadzone = <300>;
-      scale-multiplier = <1>;
-      scale-divisor = <50>;
-      evt-type = <2>;
-      input-code = <0>;
-      invert;
-    };
-    y-ch {
       io-channels = <&adc 5>;
       mv-mid = <2048>;
       mv-min-max = <2000>;
@@ -85,8 +74,17 @@
       scale-multiplier = <1>;
       scale-divisor = <50>;
       evt-type = <2>;
+      input-code = <0>;
+    };
+    y-ch {
+      io-channels = <&adc 7>;
+      mv-mid = <2048>;
+      mv-min-max = <2000>;
+      mv-deadzone = <300>;
+      scale-multiplier = <1>;
+      scale-divisor = <50>;
+      evt-type = <2>;
       input-code = <1>;
-      invert;
     };
   };
 
