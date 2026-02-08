@@ -21,7 +21,7 @@
       <&gpio1 4  (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
       <&gpio1 7  (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 
-    /* COLS: P0.06 P0.08 P0.20 P0.24 P0.11 P1.06 P1.11 P1.13 P1.15 P0.02 P0.29 P0.31 */
+    /* COLS: P0.06 P0.08 P0.20 P0.24 P0.11 P1.06 P1.11 P1.13 P1.15 P0.02 P0.10 P0.09 */
     col-gpios =
       <&gpio0 6  (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
       <&gpio0 8  (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
@@ -33,7 +33,62 @@
       <&gpio1 13 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
       <&gpio1 15 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
       <&gpio0 2  (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
-      <&gpio0 29 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
-      <&gpio0 31 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+      <&gpio0 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
+      <&gpio0 9  (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+  };
+};
+
+/* Analog stick: X = P0.29 (AIN5), Y = P0.31 (AIN7) */
+&adc {
+  status = "okay";
+  #address-cells = <1>;
+  #size-cells = <0>;
+  channel@5 {
+    reg = <5>;
+    zephyr,gain = "ADC_GAIN_1_6";
+    zephyr,reference = "ADC_REF_INTERNAL";
+    zephyr,acquisition-time = <0>;
+    zephyr,input-positive = <5>;
+    zephyr,resolution = <12>;
+  };
+  channel@7 {
+    reg = <7>;
+    zephyr,gain = "ADC_GAIN_1_6";
+    zephyr,reference = "ADC_REF_INTERNAL";
+    zephyr,acquisition-time = <0>;
+    zephyr,input-positive = <7>;
+    zephyr,resolution = <12>;
+  };
+};
+
+/ {
+  anin0: analog_input_0 {
+    compatible = "zmk,analog-input";
+    sampling-hz = <100>;
+    x-ch {
+      io-channels = <&adc 5>;
+      mv-mid = <2048>;
+      mv-min-max = <2000>;
+      mv-deadzone = <100>;
+      scale-multiplier = <1>;
+      scale-divisor = <50>;
+      evt-type = <2>;
+      input-code = <0>;
+    };
+    y-ch {
+      io-channels = <&adc 7>;
+      mv-mid = <2048>;
+      mv-min-max = <2000>;
+      mv-deadzone = <100>;
+      scale-multiplier = <1>;
+      scale-divisor = <50>;
+      evt-type = <2>;
+      input-code = <1>;
+    };
+  };
+
+  stick_listener: stick_listener {
+    compatible = "zmk,input-listener";
+    device = <&anin0>;
   };
 };

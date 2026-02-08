@@ -3,8 +3,18 @@ if SHIELD_GMN_TEST
 config ZMK_KEYBOARD_NAME
     default "gmn_test"
 
-# Mouse buttons (left/right click)
+# Mouse: stick + left/right click
 config ZMK_POINTING
+    default y
+
+# Analog stick (badjeff/zmk-analog-input-driver)
+config ADC
+    default y
+
+config ANALOG_INPUT
+    default y
+
+config INPUT
     default y
 
 endif # SHIELD_GMN_TEST
