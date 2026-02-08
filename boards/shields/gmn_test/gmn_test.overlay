@@ -74,7 +74,7 @@
       scale-multiplier = <1>;
       scale-divisor = <50>;
       evt-type = <2>;
-      input-code = <0>;
+      input-code = <1>;
     };
     y-ch {
       io-channels = <&adc 7>;
@@ -84,7 +84,7 @@
       scale-multiplier = <1>;
       scale-divisor = <50>;
       evt-type = <2>;
-      input-code = <1>;
+      input-code = <0>;
     };
   };
 
