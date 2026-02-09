@@ -24,4 +24,8 @@ config ZMK_DISPLAY
 config I2C
     default y
 
+# Display: show last key row/column on status screen
+config ZMK_WIDGET_KEY_POSITION_STATUS
+    default y
+
 endif # SHIELD_GMN_TEST

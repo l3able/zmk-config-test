@@ -1,0 +1,5 @@
+
+config ZMK_WIDGET_KEY_POSITION_STATUS
+    bool "Widget for last key position (row/column)"
+    depends on !ZMK_SPLIT || ZMK_SPLIT_ROLE_CENTRAL
+    select LV_USE_LABEL

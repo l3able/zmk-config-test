@@ -101,6 +101,30 @@ jobs:
         run: |
           sed -i.bak 's/\.oversampling = 4,/.oversampling = 0,/' zmk/app/module/drivers/sensor/battery/battery_nrf_vddh.c || true
 
+      - name: Patch display key-position widget (gmn_test)
+        working-directory: ${{ env.base_dir }}
+        if: matrix.shield == 'gmn_test'
+        run: |
+          cp "$GITHUB_WORKSPACE/boards/shields/gmn_test/widgets/key_position_status.c" zmk/app/src/display/widgets/
+          cp "$GITHUB_WORKSPACE/boards/shields/gmn_test/widgets/key_position_status.h" zmk/app/include/zmk/display/widgets/
+          cp "$GITHUB_WORKSPACE/boards/shields/gmn_test/patches/status_screen.c" zmk/app/src/display/status_screen.c
+          echo 'target_sources_ifdef(CONFIG_ZMK_WIDGET_KEY_POSITION_STATUS app PRIVATE key_position_status.c)' >> zmk/app/src/display/widgets/CMakeLists.txt
+          python3 << 'PYEOF'
+          import os
+          ws = os.environ.get("GITHUB_WORKSPACE", ".")
+          p = "zmk/app/src/display/widgets/Kconfig"
+          with open(p) as f:
+            L = f.readlines()
+          with open(os.path.join(ws, "boards/shields/gmn_test/patches/Kconfig.key_position_fragment")) as f:
+            frag = f.read()
+          for i in range(len(L) - 1, -1, -1):
+            if L[i].strip() == "endmenu":
+              L.insert(i, frag)
+              break
+          with open(p, "w") as f:
+            f.writelines(L)
+          PYEOF
+
       - name: West Zephyr export
         working-directory: ${{ env.base_dir }}
         run: west zephyr-export
