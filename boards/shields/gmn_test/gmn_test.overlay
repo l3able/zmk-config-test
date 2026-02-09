@@ -94,7 +94,7 @@
   };
 };
 
-/* SSD1306 OLED: SDA = P1.02, SCL = P1.01 */
+/* SSD1306 OLED: SDA = P1.02, SCL = P1.01. Увімкни в Kconfig.defconfig (CONFIG_ZMK_DISPLAY=y, CONFIG_I2C=y) коли збірка з LVGL буде виправлена */
 &pinctrl {
   i2c0_default: i2c0_default {
     group1 {
@@ -114,7 +114,7 @@
 &i2c0 {
   status = "okay";
   ssd1306: ssd1306@3c {
-    compatible = "solomon,ssd1306fb-i2c";
+    compatible = "solomon,ssd1306fb", "solomon,ssd1306fb-i2c";
     reg = <0x3c>;
     width = <128>;
     height = <64>;
