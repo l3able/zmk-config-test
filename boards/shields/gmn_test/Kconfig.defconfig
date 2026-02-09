@@ -17,4 +17,11 @@ config ANALOG_INPUT
 config INPUT
     default y
 
+# SSD1306 display (текстовий статус: шар, батарея, USB/BLE)
+config ZMK_DISPLAY
+    default y
+
+config I2C
+    default y
+
 endif # SHIELD_GMN_TEST
