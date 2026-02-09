@@ -27,6 +27,9 @@ config I2C
 config SSD1306
     default y
 
+config ZMK_DISPLAY_INVERT
+    default y
+
 if LVGL
 
 config LV_Z_VDB_SIZE
