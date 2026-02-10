@@ -13,7 +13,6 @@
 #include <zmk/display/widgets/modifiers_status.h>
 #include <zmk/display/widgets/stick_xy_status.h>
 #include <zmk/display/status_screen.h>
-#include "matrix_splash.h"
 
 #include <zephyr/logging/log.h>
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
@@ -106,6 +105,5 @@ lv_obj_t *zmk_display_status_screen() {
                  LV_ALIGN_RIGHT_MID, 0, 0);
 #endif
 
-    /* Show matrix splash first; after 5 s switch to this status screen */
-    return matrix_splash_screen_create(status_screen);
+    return status_screen;
 }
