@@ -51,4 +51,12 @@ endif # LVGL
 config ZMK_WIDGET_KEY_POSITION_STATUS
     default y
 
+# Display: show modifier keys (C S A G)
+config ZMK_WIDGET_MODIFIERS_STATUS
+    default y
+
+# Display: show stick X/Y (ADC mV)
+config ZMK_WIDGET_STICK_XY_STATUS
+    default y
+
 endif # SHIELD_GMN_TEST

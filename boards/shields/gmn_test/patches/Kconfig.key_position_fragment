@@ -3,3 +3,14 @@ config ZMK_WIDGET_KEY_POSITION_STATUS
     bool "Widget for last key position (row/column)"
     depends on !ZMK_SPLIT || ZMK_SPLIT_ROLE_CENTRAL
     select LV_USE_LABEL
+
+config ZMK_WIDGET_MODIFIERS_STATUS
+    bool "Widget for modifier keys state (Ctrl/Shift/Alt/Gui)"
+    depends on !ZMK_SPLIT || ZMK_SPLIT_ROLE_CENTRAL
+    select LV_USE_LABEL
+
+config ZMK_WIDGET_STICK_XY_STATUS
+    bool "Widget for analog stick X/Y coordinates"
+    depends on !ZMK_SPLIT || ZMK_SPLIT_ROLE_CENTRAL
+    depends on ADC
+    select LV_USE_LABEL

@@ -10,6 +10,8 @@
 #include <zmk/display/widgets/layer_status.h>
 #include <zmk/display/widgets/wpm_status.h>
 #include <zmk/display/widgets/key_position_status.h>
+#include <zmk/display/widgets/modifiers_status.h>
+#include <zmk/display/widgets/stick_xy_status.h>
 #include <zmk/display/status_screen.h>
 
 #include <zephyr/logging/log.h>
@@ -37,6 +39,14 @@ static struct zmk_widget_wpm_status wpm_status_widget;
 
 #if IS_ENABLED(CONFIG_ZMK_WIDGET_KEY_POSITION_STATUS)
 static struct zmk_widget_key_position_status key_position_status_widget;
+#endif
+
+#if IS_ENABLED(CONFIG_ZMK_WIDGET_MODIFIERS_STATUS)
+static struct zmk_widget_modifiers_status modifiers_status_widget;
+#endif
+
+#if IS_ENABLED(CONFIG_ZMK_WIDGET_STICK_XY_STATUS)
+static struct zmk_widget_stick_xy_status stick_xy_status_widget;
 #endif
 
 lv_obj_t *zmk_display_status_screen() {
@@ -77,6 +87,22 @@ lv_obj_t *zmk_display_status_screen() {
                               lv_theme_get_font_small(screen), LV_PART_MAIN);
     lv_obj_align(zmk_widget_key_position_status_obj(&key_position_status_widget),
                  LV_ALIGN_BOTTOM_MID, 0, 0);
+#endif
+
+#if IS_ENABLED(CONFIG_ZMK_WIDGET_MODIFIERS_STATUS)
+    zmk_widget_modifiers_status_init(&modifiers_status_widget, screen);
+    lv_obj_set_style_text_font(zmk_widget_modifiers_status_obj(&modifiers_status_widget),
+                               lv_theme_get_font_small(screen), LV_PART_MAIN);
+    lv_obj_align(zmk_widget_modifiers_status_obj(&modifiers_status_widget),
+                 LV_ALIGN_LEFT_MID, 0, 0);
+#endif
+
+#if IS_ENABLED(CONFIG_ZMK_WIDGET_STICK_XY_STATUS)
+    zmk_widget_stick_xy_status_init(&stick_xy_status_widget, screen);
+    lv_obj_set_style_text_font(zmk_widget_stick_xy_status_obj(&stick_xy_status_widget),
+                              lv_theme_get_font_small(screen), LV_PART_MAIN);
+    lv_obj_align(zmk_widget_stick_xy_status_obj(&stick_xy_status_widget),
+                 LV_ALIGN_RIGHT_MID, 0, 0);
 #endif
 
     return screen;
