@@ -32,9 +32,12 @@ config ZMK_DISPLAY_INVERT
 
 if LVGL
 
-# 8px font for matrix splash rain
-config LV_FONT_MONTSERRAT_8
+# Canvas + 8px font for matrix splash screen
+config GMN_TEST_MATRIX_SPLASH
+    bool
     default y
+    select LV_USE_CANVAS
+    select LV_FONT_MONTSERRAT_8
 
 config LV_Z_VDB_SIZE
     default 64
