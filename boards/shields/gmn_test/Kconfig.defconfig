@@ -32,6 +32,10 @@ config ZMK_DISPLAY_INVERT
 
 if LVGL
 
+# 8px font for matrix splash rain
+config LV_FONT_MONTSERRAT_8
+    default y
+
 config LV_Z_VDB_SIZE
     default 64
 

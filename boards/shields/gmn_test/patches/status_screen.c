@@ -13,6 +13,7 @@
 #include <zmk/display/widgets/modifiers_status.h>
 #include <zmk/display/widgets/stick_xy_status.h>
 #include <zmk/display/status_screen.h>
+#include "matrix_splash.h"
 
 #include <zephyr/logging/log.h>
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
@@ -50,60 +51,61 @@ static struct zmk_widget_stick_xy_status stick_xy_status_widget;
 #endif
 
 lv_obj_t *zmk_display_status_screen() {
-    lv_obj_t *screen;
-    screen = lv_obj_create(NULL);
+    lv_obj_t *status_screen;
+    status_screen = lv_obj_create(NULL);
 
 #if IS_ENABLED(CONFIG_ZMK_WIDGET_BATTERY_STATUS)
-    zmk_widget_battery_status_init(&battery_status_widget, screen);
+    zmk_widget_battery_status_init(&battery_status_widget, status_screen);
     lv_obj_align(zmk_widget_battery_status_obj(&battery_status_widget), LV_ALIGN_TOP_RIGHT, 0, 0);
 #endif
 
 #if IS_ENABLED(CONFIG_ZMK_WIDGET_OUTPUT_STATUS)
-    zmk_widget_output_status_init(&output_status_widget, screen);
+    zmk_widget_output_status_init(&output_status_widget, status_screen);
     lv_obj_align(zmk_widget_output_status_obj(&output_status_widget), LV_ALIGN_TOP_LEFT, 0, 0);
 #endif
 
 #if IS_ENABLED(CONFIG_ZMK_WIDGET_PERIPHERAL_STATUS)
-    zmk_widget_peripheral_status_init(&peripheral_status_widget, screen);
+    zmk_widget_peripheral_status_init(&peripheral_status_widget, status_screen);
     lv_obj_align(zmk_widget_peripheral_status_obj(&peripheral_status_widget), LV_ALIGN_TOP_LEFT, 0,
                  0);
 #endif
 
 #if IS_ENABLED(CONFIG_ZMK_WIDGET_LAYER_STATUS)
-    zmk_widget_layer_status_init(&layer_status_widget, screen);
+    zmk_widget_layer_status_init(&layer_status_widget, status_screen);
     lv_obj_set_style_text_font(zmk_widget_layer_status_obj(&layer_status_widget),
-                               lv_theme_get_font_small(screen), LV_PART_MAIN);
+                               lv_theme_get_font_small(status_screen), LV_PART_MAIN);
     lv_obj_align(zmk_widget_layer_status_obj(&layer_status_widget), LV_ALIGN_BOTTOM_LEFT, 0, 0);
 #endif
 
 #if IS_ENABLED(CONFIG_ZMK_WIDGET_WPM_STATUS)
-    zmk_widget_wpm_status_init(&wpm_status_widget, screen);
+    zmk_widget_wpm_status_init(&wpm_status_widget, status_screen);
     lv_obj_align(zmk_widget_wpm_status_obj(&wpm_status_widget), LV_ALIGN_BOTTOM_RIGHT, 0, 0);
 #endif
 
 #if IS_ENABLED(CONFIG_ZMK_WIDGET_KEY_POSITION_STATUS)
-    zmk_widget_key_position_status_init(&key_position_status_widget, screen);
+    zmk_widget_key_position_status_init(&key_position_status_widget, status_screen);
     lv_obj_set_style_text_font(zmk_widget_key_position_status_obj(&key_position_status_widget),
-                              lv_theme_get_font_small(screen), LV_PART_MAIN);
+                              lv_theme_get_font_small(status_screen), LV_PART_MAIN);
     lv_obj_align(zmk_widget_key_position_status_obj(&key_position_status_widget),
                  LV_ALIGN_BOTTOM_MID, 0, 0);
 #endif
 
 #if IS_ENABLED(CONFIG_ZMK_WIDGET_MODIFIERS_STATUS)
-    zmk_widget_modifiers_status_init(&modifiers_status_widget, screen);
+    zmk_widget_modifiers_status_init(&modifiers_status_widget, status_screen);
     lv_obj_set_style_text_font(zmk_widget_modifiers_status_obj(&modifiers_status_widget),
-                               lv_theme_get_font_small(screen), LV_PART_MAIN);
+                               lv_theme_get_font_small(status_screen), LV_PART_MAIN);
     lv_obj_align(zmk_widget_modifiers_status_obj(&modifiers_status_widget),
                  LV_ALIGN_LEFT_MID, 0, 0);
 #endif
 
 #if IS_ENABLED(CONFIG_ZMK_WIDGET_STICK_XY_STATUS)
-    zmk_widget_stick_xy_status_init(&stick_xy_status_widget, screen);
+    zmk_widget_stick_xy_status_init(&stick_xy_status_widget, status_screen);
     lv_obj_set_style_text_font(zmk_widget_stick_xy_status_obj(&stick_xy_status_widget),
-                              lv_theme_get_font_small(screen), LV_PART_MAIN);
+                              lv_theme_get_font_small(status_screen), LV_PART_MAIN);
     lv_obj_align(zmk_widget_stick_xy_status_obj(&stick_xy_status_widget),
                  LV_ALIGN_RIGHT_MID, 0, 0);
 #endif
 
-    return screen;
+    /* Show matrix splash first; after 5 s switch to this status screen */
+    return matrix_splash_screen_create(status_screen);
 }

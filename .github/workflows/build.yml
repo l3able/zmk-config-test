@@ -111,7 +111,10 @@ jobs:
           cp "$GITHUB_WORKSPACE/boards/shields/gmn_test/widgets/modifiers_status.h" zmk/app/include/zmk/display/widgets/
           cp "$GITHUB_WORKSPACE/boards/shields/gmn_test/widgets/stick_xy_status.c" zmk/app/src/display/widgets/
           cp "$GITHUB_WORKSPACE/boards/shields/gmn_test/widgets/stick_xy_status.h" zmk/app/include/zmk/display/widgets/
+          cp "$GITHUB_WORKSPACE/boards/shields/gmn_test/widgets/matrix_splash.c" zmk/app/src/display/
+          cp "$GITHUB_WORKSPACE/boards/shields/gmn_test/widgets/matrix_splash.h" zmk/app/src/display/
           cp "$GITHUB_WORKSPACE/boards/shields/gmn_test/patches/status_screen.c" zmk/app/src/display/status_screen.c
+          echo 'target_sources_ifdef(CONFIG_ZMK_DISPLAY app PRIVATE matrix_splash.c)' >> zmk/app/src/display/CMakeLists.txt
           echo 'target_sources_ifdef(CONFIG_ZMK_WIDGET_KEY_POSITION_STATUS app PRIVATE key_position_status.c)' >> zmk/app/src/display/widgets/CMakeLists.txt
           echo 'target_sources_ifdef(CONFIG_ZMK_WIDGET_MODIFIERS_STATUS app PRIVATE modifiers_status.c)' >> zmk/app/src/display/widgets/CMakeLists.txt
           echo 'target_sources_ifdef(CONFIG_ZMK_WIDGET_STICK_XY_STATUS app PRIVATE stick_xy_status.c)' >> zmk/app/src/display/widgets/CMakeLists.txt
