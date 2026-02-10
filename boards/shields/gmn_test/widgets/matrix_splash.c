@@ -19,6 +19,9 @@
 #define SPLASH_DURATION_MS  (5 * 1000)
 #define FRAME_INTERVAL_MS   80
 
+/* Use bars instead of text on 1bpp to avoid draw_text noise/artifacts */
+#define MATRIX_USE_BARS  1
+
 #if (LV_COLOR_DEPTH != 1)
 #error "matrix_splash expects LV_COLOR_DEPTH_1 (SSD1306)"
 #endif
@@ -49,16 +52,17 @@ static void draw_frame(void) {
 		return;
 	}
 
-	lv_draw_rect_dsc_t rect_dsc;
-	lv_draw_rect_dsc_init(&rect_dsc);
-	rect_dsc.bg_color = lv_color_black();
+	/* 1bpp: explicit buffer clear (fill_bg can be unreliable on mono canvas) */
+	memset(canvas_buf, 0, CANVAS_BUF_SIZE);
+
+	lv_draw_rect_dsc_t rect_black;
+	lv_draw_rect_dsc_init(&rect_black);
+	rect_black.bg_color = lv_color_black();
 	lv_canvas_fill_bg(canvas, lv_color_black(), LV_OPA_COVER);
 
-	lv_draw_label_dsc_t label_dsc;
-	lv_draw_label_dsc_init(&label_dsc);
-	label_dsc.color = lv_color_white();
-	label_dsc.font = &lv_font_montserrat_8;
-	label_dsc.align = LV_TEXT_ALIGN_LEFT;
+	lv_draw_rect_dsc_t rect_white;
+	lv_draw_rect_dsc_init(&rect_white);
+	rect_white.bg_color = lv_color_white();
 
 	for (int c = 0; c < COLS; c++) {
 		for (uint8_t i = 0; i < length[c]; i++) {
@@ -66,10 +70,22 @@ static void draw_frame(void) {
 			if (y < 0 || y >= MATRIX_H) {
 				continue;
 			}
-			uint32_t r = rnd_state[c];
-			unsigned idx = prng_next(&rnd_state[c]) % NUM_CHARS;
-			char ch[2] = { matrix_chars[idx], '\0' };
-			lv_canvas_draw_text(canvas, c * COL_W, y, COL_W, &label_dsc, ch);
+			(void)prng_next(&rnd_state[c]);
+#if MATRIX_USE_BARS
+			/* Bars: reliable on 1bpp (no text rendering) */
+			lv_canvas_draw_rect(canvas, c * COL_W, y, COL_W, ROW_H, &rect_white);
+#else
+			{
+				lv_draw_label_dsc_t label_dsc;
+				lv_draw_label_dsc_init(&label_dsc);
+				label_dsc.color = lv_color_white();
+				label_dsc.font = &lv_font_montserrat_8;
+				label_dsc.align = LV_TEXT_ALIGN_LEFT;
+				unsigned idx = rnd_state[c] % NUM_CHARS;
+				char ch[2] = { matrix_chars[idx], '\0' };
+				lv_canvas_draw_text(canvas, c * COL_W, y, COL_W, &label_dsc, ch);
+			}
+#endif
 		}
 		head_y[c] += (int16_t)speed[c];
 		if (head_y[c] > MATRIX_H + (int16_t)(length[c] * ROW_H)) {
@@ -77,6 +93,8 @@ static void draw_frame(void) {
 			prng_next(&rnd_state[c]);
 		}
 	}
+
+	lv_obj_invalidate(canvas);
 }
 
 static void switch_to_status_cb(struct k_work *work) {
@@ -110,6 +128,7 @@ lv_obj_t *matrix_splash_screen_create(lv_obj_t *next_screen) {
 	lv_obj_set_style_pad_all(splash_screen, 0, LV_PART_MAIN);
 
 	canvas = lv_canvas_create(splash_screen);
+	memset(canvas_buf, 0, CANVAS_BUF_SIZE);
 	lv_canvas_set_buffer(canvas, canvas_buf, MATRIX_W, MATRIX_H, LV_IMG_CF_TRUE_COLOR);
 	lv_obj_set_size(canvas, MATRIX_W, MATRIX_H);
 	lv_obj_align(canvas, LV_ALIGN_TOP_LEFT, 0, 0);
