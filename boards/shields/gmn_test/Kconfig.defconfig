@@ -55,8 +55,6 @@ config ZMK_WIDGET_KEY_POSITION_STATUS
 config ZMK_WIDGET_MODIFIERS_STATUS
     default y
 
-# Display: show stick X/Y (ADC mV)
-config ZMK_WIDGET_STICK_XY_STATUS
-    default y
+# Stick X/Y на екрані вимкнено (конфлікт з analog-input — той самий ADC)
 
 endif # SHIELD_GMN_TEST
